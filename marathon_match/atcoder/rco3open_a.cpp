@@ -16,82 +16,63 @@ int main(){
     cur=0;pre=0;
     memset(num,-1,sizeof(num));
     bool flag=true;
-    //cout<<0<<endl;
-    int mv=1;
+    int fac=6;
     while(1){
         if(flag){
             cout<<cur<<endl;
             cin>>cn;
+            num[cur]=cn;
         }
-        
-        int mn=INF,id=-1;//,nid=-1;
-        /*
-        for(int i=cur+mv;i>=0&&i<N;i+=mv){
-            if(num[i]==-1){
-                nid
+        if(dist<50) fac=30;
+        int mn=INF,nm=INF,id=-1,di=-1;
+        //int cnt=0;
+        rep(i,N){
+            if(cur!=i&&num[i]==-1&&abs(cur-i)<nm&&abs(cur-i)<=dist){
+                nm=abs(cur-i);
+                di=i;
             }
+            //if(num[i]==-1) ++cnt;
         }
-        */
         rep(i,N){
             if(cur!=i&&num[i]==cn&&abs(cur-i)<mn&&abs(cur-i)<=dist){
                 mn=abs(cur-i);
                 id=i;
             }
         }
-        if(id!=-1){
-            /*
-            int mv2=1;
-            if(cur>id) mv2=-1;
-            else mv2=1;
-            */
+        if((di==-1&&id!=-1)||mn<10||(di!=-1&&(mn<nm*fac))){
             score+=cn;
             num[id]=-1;
             num[cur]=-1;
             cur=id;
-            int tot=0,cnt=0;
-            FOR(i,cur,N){
-                if(num[i]==-1) ++tot;
-                if(num[i]==-1&&cur>=i) ++cnt;
-            }
-            if(tot-cnt<=cnt) mv=1;
-            else mv=-1;
+            cout<<cur<<endl;
+            cin>>cn;
+            dist-=mn;
             flag=true;
         }
-        else{
-            num[cur]=cn;
-            int nid=-1;
-            mn=INF;
-            rep(i,N){
-                if(num[i]==-1&&abs(cur-i)<mn&&abs(cur-i)<=dist){
-                    mn=abs(cur-i);
-                    nid=i;
-                }
-            }
-            if(nid!=-1){
-                while(1){
-                    if(cur==N-1)mv=-1;
-                    else if(cur==0) mv=1;
-                    cur+=mv;
-                    if(num[cur]==-1) break;
-                }
-                cur=nid;
+        else if(di!=-1){
+            int pre=cn;
+            cout<<di<<endl;
+            cin>>cn;
+            if(pre==cn){
+                score+=cn;
+                num[di]=-1;
+                num[cur]=-1;
+                flag=true;
             }
             else{
-                if(cur==N-1)mv=-1;
-                else if(cur==0) mv=1;
-                cur+=mv;
+                num[di]=cn;
+                flag=false;
             }
-            flag=false;
+            dist-=nm;
+            cur=di;
+        }
+        else{
+            cout<<-1<<endl;
+            break;
         }
         if(dist<=0){
             cout<<-1<<endl;
             break;
-        }
-        else{
-            if(mn==INF)dist-=1;
-            else dist-=mn;
-            cout<<cur<<endl;
-            cin>>cn;
         }
     }
     cerr<<score<<endl;
